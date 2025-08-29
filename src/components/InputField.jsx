@@ -1,6 +1,6 @@
 const InputField = ({ icon, type, placeholder }) => {
   return (
-    <div className="flex items-center border rounded-full px-3 py-2 bg-gray-100">
+    <div className="flex items-center border-0 rounded-full px-3 py-2 bg-white">
       <span className="material-icons text-gray-500">{icon}</span>
       <input
         type={type}
