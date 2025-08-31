@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import {FiHome, FiRefreshCcw, FiCircle} from 'react-icons/fi'
+import {FiHome, FiRefreshCcw} from 'react-icons/fi'
+import {MdLanguage} from 'react-icons/md'
 
 const BottomNav = () => {
   return (
@@ -11,7 +12,7 @@ const BottomNav = () => {
         <FiRefreshCcw className="text-3xl lg:mb-10" />
       </Link>
       <Link to="/login">
-        <FiCircle className="text-3xl lg:mb-10" />
+        <MdLanguage className="text-3xl lg:mb-10" />
       </Link>
     </div>
   );
