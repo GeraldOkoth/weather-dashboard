@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { getCurrentWeather, getForecast } from "../api/weather";
+import ForecastItem from "../components/ForecastItem";
 import Navbar from "../components/Navbar";
-import WeatherCard from "../components/WeatherCard";
 import BottomNav from "../components/BottomNav";
-import WeatherConditionCard from "../components/WeatherConditionCard";
+import { FaCloud, FaTemperatureHigh, FaWater, FaWind } from "react-icons/fa";
 
 const Dashboard = () => {
   const [city, setCity] = useState("Nairobi");
@@ -11,72 +11,80 @@ const Dashboard = () => {
   const [forecast, setForecast] = useState([]);
   const [error, setError] = useState(null);
 
-  // const weatherData = [
-  //   { day: "Thursday", temp: 30, icon: "☀️" },
-  //   { day: "Friday", temp: 20, icon: "🌧️" },
-  //   { day: "Saturday", temp: 17, icon: "🌩️" },
-  //   { day: "Sunday", temp: 15, icon: "🌨️" },
-  //   { day: "Monday", temp: 32, icon: "☀️" },
-  //   { day: "Tuesday", temp: 24, icon: "🌤️" },
-  //   { day: "Wednesday", temp: 26, icon: "☀️" },
-  // ];
-
-  const weatherCondition = [
-    { Icon: "🌡", heading: "Temperature", val: "76°C" },
-    { Icon: "💧", heading: "Humidity", val: "32%" },
-    { Icon: "💨", heading: "Wind", val: "7.6 km/h" },
-    { Icon: "🌦️", heading: "Weather Condition", val: 76 },
-  ];
-
-  const fetchWeatherData = async () => {
+  const fetchWeatherData = useCallback(async () => {
     try {
       setError(null);
       const current = await getCurrentWeather(city);
       const forecastData = await getForecast(city);
 
       setWeather(current);
-      setForecast(forecastData.list.slice(0, 7)); // get next 7 entries
+
+      const dailyForecast = forecastData.list.filter((item) =>
+        item.dt_txt.includes("12:00:00")
+      );
+      setForecast(dailyForecast.slice(0, 7));
     } catch (err) {
-      setError("Failed to fetch weather data");
+      setError(err.message || "Failed to fetch weather data");
     }
-  };
+  }, [city]);
 
   useEffect(() => {
     fetchWeatherData();
-  }, [city]);
+  }, [fetchWeatherData]);
+
+  // Get current full date
+  const getCurrentDate = () => {
+    const options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+    return new Date().toLocaleDateString(undefined, options);
+  };
 
   return (
     <>
-      <Navbar className="w-12/12" />
-      {error ? (
-        <div className="text-red-500">{error}</div>
-      ) : weather ? (
-        <div className="min-h-screen bg-neutral-300 pb-16 -z-20">
-          <div className="px-4 py-4 lg:w-9/12 lg:mx-auto">
-            <div className="mt-20 text-center">
-              <h2 className="text-xl font-bold mb-1">Nairobi</h2>
-              <p className="font- mb-4">Wednesday, Aug 20 2025</p>
+      <Navbar city={city} setCity={setCity} />
+      <div className="p-6 bg-gray-200 min-h-screen">
+        {weather && (
+          <div className="text-center mb-6">
+            <h2 className="text-2xl font-bold">{weather.name}</h2>
+            <p className="text-gray-600">{getCurrentDate()}</p>
+          </div>
+        )}
+
+        {error ? (
+          <div className="text-red-500 text-center">{error}</div>
+        ) : weather ? (
+          <div className="lg:max-w-2xl mx-auto">
+            <div className="grid grid-cols-2 gap-4 mt-4 bg-neutral-100 shadow p-6 rounded-2xl">
+              <div className="bg-black text-white p-4 rounded-2xl">
+                <FaTemperatureHigh /> Temp: {Math.round(weather.main.temp)}°C
+              </div>
+              <div className="bg-black text-white p-4 rounded-2xl">
+                <FaWater /> Humidity: {weather.main.humidity}%
+              </div>
+              <div className="bg-black text-white p-4 rounded-2xl">
+                <FaWind /> Wind: {(weather.wind.speed * 3.6).toFixed(1)} km/h
+              </div>
+              <div className="bg-black text-white p-4 rounded-2xl">
+                <FaCloud className="text-white inline-block mr-2" />
+                {weather.weather[0].description}
+              </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 mb-6 bg-blue-100 p-4 rounded-2xl">
-              {weatherCondition.map((c, i) => (
-                <WeatherConditionCard
-                  key={i}
-                  Icon={c.Icon}
-                  heading={c.heading}
-                  val={c.val}
-                />
+            <h3 className="mt-6 font-bold text-center">7-Day Forecast</h3>
+            <div className="mt-4 space-y-2 rounded-2xl">
+              {forecast.map((item, index) => (
+                <ForecastItem key={index} data={item} />
               ))}
             </div>
-            <h3 className="font-bold mb-2">7-day Weather Forecast</h3>
-            {forecast.map((item, index) => (
-              <WeatherCard key={index} data={item} />
-            ))}
           </div>
-        </div>
-      ) : (
-        <p>Loading...</p>
-      )}
+        ) : (
+          <p className="text-center">Loading weather...</p>
+        )}
+      </div>
       <BottomNav />
     </>
   );
