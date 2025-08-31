@@ -19,7 +19,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div className="fixed top-0 left-0 right-0 bg-white flex flex-col px-4 py-3 shadow">
+    <div className="fixed top-0 left-0 right-0 bg-white flex flex-col px-4 py-3 shadow z-50">
       <h1 className="font-extrabold text-black text-lg text-center">
         Weather Dashboard
       </h1>
@@ -30,13 +30,13 @@ const Navbar = () => {
           type="text"
           value={city}
           onChange={(e) => setCity(e.target.value)}
-          placeholder="Search weather by city name..."
+          placeholder="Search city..."
           className="rounded-full px-3 py-1 md:w-3xl sm:w-1.5 border outline-none text-gray-500 "
         />
         <div ref={bellRef} className="relative">
           <button
             onClick={() => setIsModalOpen((prev) => !prev)}
-            className="p-2 hover:text-blue-500"
+            className="p-2 hover:text-blue-500 text-3xl"
           >
             <FaBell />
           </button>

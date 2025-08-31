@@ -6,7 +6,7 @@ import { FaEnvelope, FaLock, FaCheck } from "react-icons/fa";
 
 const ResetPassword = () => {
   return (
-    <div className="xl:w-4/12 flex flex-col items-center justify-center mt-4 mx-16 bg-gray-300 p-6 rounded-2xl shadow-2xl">
+    <div className="flex flex-col justify-center mx-auto w-3/4 lg:w-1/2 mt-4 bg-gray-300 p-6  rounded-2xl shadow-2xl">
       <h2 className="text-center text-xl font-semibold mb-4">Reset Password</h2>
       <form className="space-y-4">
         <InputField
