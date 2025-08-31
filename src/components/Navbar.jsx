@@ -24,7 +24,8 @@ const Navbar = () => {
         Weather Dashboard
       </h1>
       <div className="flex justify-between items-center relative">
-        <img src="../assets/react.svg" alt="profile" className="rounded" />
+        <div className="rounded-full px-3 py-1 w-10 h-10 cursor-pointer bg-gray-500">
+        </div>
         <input
           type="text"
           value={city}
