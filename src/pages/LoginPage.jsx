@@ -37,7 +37,6 @@ const LoginPage = () => {
           <NavLink to="/dashboard">
             <Button button="Login" />
           </NavLink>
-
           <div className="flex items-center justify-center text-gray-400">
             <span className="flex-1 border-b"></span>
             <span className="px-2">or</span>
