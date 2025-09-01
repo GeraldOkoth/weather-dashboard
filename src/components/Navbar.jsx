@@ -11,7 +11,7 @@ const Navbar = ({ onSearch }) => {
   };
 
   return (
-    <nav className="flex items-center justify-between px-6 py-3 bg-white dark:bg-gray-900 shadow-md">
+    <nav className="flex items-center fixed z-10 top-0 left-0 right-0 justify-between px-6 py-3 bg-white dark:bg-gray-900 shadow-md">
       <h1 className="text-sm font-bold text-gray-700 dark:text-gray-200">
         Weather Dashboard
       </h1>
