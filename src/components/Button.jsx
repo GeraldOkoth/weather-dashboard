@@ -10,7 +10,7 @@ export default function Button({ button }) {
 
 export function OAuthButton({ icon, Button }) {
   return (
-    <button className="w-full py-2 rounded-full bg-white border-0 flex items-center justify-center gap-2">
+    <button className="w-full py-2 rounded-full bg-white hover:bg-blue-400 border-0 flex items-center justify-center gap-2">
       {icon}
       <NavLink to="/dashboard">{Button}</NavLink>
     </button>
