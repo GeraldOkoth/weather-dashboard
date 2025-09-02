@@ -1,8 +1,9 @@
 import { useEffect, useState, useCallback } from "react";
 import { getCurrentWeather, getForecast } from "../api/weather";
-import ForecastItem from "../components/ForecastItem";
 import Navbar from "../components/Navbar";
 import BottomNav from "../components/BottomNav";
+import ErrorMessage from "./ErrorMessage"
+import WeatherCard from "../components/WeatherCard";
 import { FaCloud, FaTemperatureHigh, FaWater, FaWind } from "react-icons/fa";
 
 const Dashboard = () => {
@@ -43,24 +44,28 @@ const Dashboard = () => {
     return new Date().toLocaleDateString(undefined, options);
   };
 
+  // Handle search from Navbar
+  const handleSearch = (searchCity) => {
+    setCity(searchCity);
+  };
+
   return (
     <>
-      <Navbar city={city} setCity={setCity} />
-      <div className="p-6 bg-gray-200 min-h-screen">
-        {weather && (
-          <div className="text-center mb-6">
-            <h2 className="text-2xl font-bold">{weather.name}</h2>
-            <p className="text-gray-600">{getCurrentDate()}</p>
-          </div>
-        )}
-
+      <Navbar city={city} setCity={setCity} onSearch={handleSearch} />
+      <div className="mt-8 p-6 bg-gray-200 min-h-screen">
         {error ? (
-          <div className="text-red-500 text-center">{error}</div>
+          <ErrorMessage />
         ) : weather ? (
           <div className="lg:max-w-2xl mx-auto">
+            {weather && (
+              <div className="text-center m-6">
+                <h2 className="text-2xl font-bold">{weather.name}</h2>
+                <p className="text-gray-600">{getCurrentDate()}</p>
+              </div>
+            )}
             <div className="grid grid-cols-2 gap-4 mt-4 bg-neutral-100 shadow p-6 rounded-2xl">
               <div className="bg-black text-white p-4 rounded-2xl">
-                <FaTemperatureHigh /> Temp: {Math.round(weather.main.temp)}°C
+                <FaTemperatureHigh /> Temperature: {Math.round(weather.main.temp)}°C
               </div>
               <div className="bg-black text-white p-4 rounded-2xl">
                 <FaWater /> Humidity: {weather.main.humidity}%
@@ -77,7 +82,7 @@ const Dashboard = () => {
             <h3 className="mt-6 font-bold text-center">7-Day Forecast</h3>
             <div className="mt-4 space-y-2 rounded-2xl">
               {forecast.map((item, index) => (
-                <ForecastItem key={index} data={item} />
+                <WeatherCard key={index} data={item} />
               ))}
             </div>
           </div>
