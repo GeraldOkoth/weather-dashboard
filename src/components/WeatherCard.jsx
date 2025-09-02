@@ -7,7 +7,7 @@ import {
   WiFog,
 } from "react-icons/wi";
 
-const ForecastItem = ({ data }) => {
+const WeatherCard = ({ data }) => {
   const date = new Date(data.dt_txt);
 
   // Map weather conditions to icons
@@ -32,7 +32,7 @@ const ForecastItem = ({ data }) => {
   };
 
   return (
-    <div className="flex justify-between items-center bg-white p-3 rounded shadow">
+    <div className="flex justify-between items-center bg-white p-3 rounded shadow-md">
       <span>{date.toDateString()}</span>
       <span className="font-bold">{Math.round(data.main.temp)}°C</span>
       {getWeatherIcon(data.weather[0].main)}
@@ -40,4 +40,4 @@ const ForecastItem = ({ data }) => {
   );
 };
 
-export default ForecastItem;
+export default WeatherCard;
